@@ -1,0 +1,31 @@
+{
+  "name": "peter-polar-bear",
+  "version": "1.0.0-beta1",
+  "scripts": {
+    "format:check": "prettier src -c",
+    "format:write": "prettier src -w",
+    "build": "tsc -b --force && tscpaths",
+    "prestart": "npm run build",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@devjacob/logger": "=0.1.4",
+    "@devjacob/smush": "^1.0.6",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "glob": "=7.2.0",
+    "mysql2": "^3.9.2"
+  },
+  "devDependencies": {
+    "@devjacob/tscpaths": "^0.1.6",
+    "prettier": "3.2.5",
+    "typescript": "^5.4.2",
+    "@types/node": "^20.11.25",
+    "@types/glob": "=7.2.0",
+    "@types/mysql": "^2.15.25"
+  },
+  "engines": {
+    "node": ">=20.x.x",
+    "npm": ">=10.x.x"
+  }
+}

@@ -1,0 +1,142 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2024-03-10T22:35:55-04:00",
+    "name": "DepuTRON",
+    "author": "jacobwpaulin@gmail.com",
+    "description": "DepuTRON Pterodactyl Egg",
+    "features": null,
+    "docker_images": {
+        "Nodejs 20": "ghcr.io\/parkervcp\/yolks:nodejs_20"
+    },
+    "file_denylist": [],
+    "startup": "exec $(pwd)\\\/ptero-run.sh",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": [\r\n        \"Client startup completed\"\r\n    ]\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n\r\n# Writes message to stdout.\r\nlog() {\r\n    local IFS=' ' # needed for $*\r\n    local val=\"$*\"\r\n\r\n    printf '%s\\n' \"$val\"\r\n}\r\n\r\nlog \"Starting to update system\"\r\napt update\r\nlog \"Finished updating system\"\r\n\r\nlog \"Starting to update npm\"\r\nnpm install npm@latest -g\r\nlog \"Finished updating npm\"\r\n\r\nlog \"Starting to install packages\"\r\nif [ -f \/mnt\/server\/package.json ]; then\r\n    cd \/mnt\/server\r\n    \/usr\/local\/bin\/npm instal\r\nfi\r\nlog \"Finished installing packages\"\r\n\r\necho -e \"Install complete\"\r\nexit 0",
+            "container": "node:20-bullseye-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Discord Token",
+            "description": "",
+            "env_variable": "DISCORD_TOKEN",
+            "default_value": "BlankToken",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Guild ID",
+            "description": "",
+            "env_variable": "GUILD_ID",
+            "default_value": "1234567890",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|numeric",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Host",
+            "description": "",
+            "env_variable": "MYSQL_HOST",
+            "default_value": "db.dojrp.com",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Port",
+            "description": "",
+            "env_variable": "MYSQL_PORT",
+            "default_value": "3306",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|numeric",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Username",
+            "description": "",
+            "env_variable": "MYSQL_USER",
+            "default_value": "dojrp",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Password",
+            "description": "",
+            "env_variable": "MYSQL_PASSWORD",
+            "default_value": "dojrp",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Schema",
+            "description": "",
+            "env_variable": "MYSQL_DATABASE",
+            "default_value": "dojrp-v4",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Connection Limit",
+            "description": "",
+            "env_variable": "MYSQL_CONNECTION_LIMIT",
+            "default_value": "100",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|numeric",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Max Idle Connections",
+            "description": "",
+            "env_variable": "MYSQL_MAX_IDLE",
+            "default_value": "10",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|numeric",
+            "field_type": "text"
+        },
+        {
+            "name": "Database Idle Timeout",
+            "description": "",
+            "env_variable": "MYSQL_IDLE_TIMEOUT",
+            "default_value": "30000",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|numeric",
+            "field_type": "text"
+        },
+        {
+            "name": "Use Development Environment",
+            "description": "When true, uses the dev environment, basically enabled verbose logging",
+            "env_variable": "USE_DEV",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean",
+            "field_type": "text"
+        }
+    ]
+}

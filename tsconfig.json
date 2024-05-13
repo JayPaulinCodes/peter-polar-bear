@@ -1,0 +1,59 @@
+{
+  "compilerOptions": {
+      // Type Checking
+      "alwaysStrict": true,
+      "allowUnreachableCode": false,
+      "allowUnusedLabels": false,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitOverride": true,
+      "noImplicitThis": true,
+      "noImplicitReturns": true,
+      "noUnusedParameters": false,
+      "strict": true,
+      "strictNullChecks": true,
+      "useUnknownInCatchVariables": true, // https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables
+
+      // Modules
+      "module": "commonjs",
+      "moduleResolution": "Node",
+      "baseUrl": "src",
+      "paths": {
+        "@bot/client": [ "client/index" ],
+        "@bot/constants": [ "constants/index" ],
+        "@bot/core": [ "core/index" ],
+        "@bot/database": [ "database/index" ]
+      },
+
+      // Emit
+      "declaration": false,
+      "outDir": "./lib",
+
+      // JS Support
+
+      // Editor Support
+
+      // Interop Constraints
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+
+      // Backwards Compatibility
+
+      // Language & Environment
+      "target": "es2022",
+
+      // Compiler Diagnostics
+
+      // Projects
+
+      // Output Formatting
+
+      // Completeness
+      "skipLibCheck": true
+
+      // Command Line
+
+      // Watch Options
+  },
+
+  "include": [ "src/**/*.ts" ]
+}
