@@ -26,7 +26,7 @@
 
       // Emit
       "declaration": false,
-      "outDir": "./lib",
+      "outDir": "./dist",
 
       // JS Support
 

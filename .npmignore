@@ -1,0 +1,10 @@
+.github/*
+logs/*
+node_modules/*
+src/*
+
+*.tgz
+.env
+.DS_Store
+README.md
+tsconfig.json

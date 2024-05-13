@@ -1,9 +1,7 @@
-.env
+node_modules/
 logs/
-old/
-lib/
-packages/
-node_modules
+dist/
+
 !**/.gitkeep
-package-lock.json
+.env
 .DS_Store
