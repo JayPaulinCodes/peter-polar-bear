@@ -1,9 +1,9 @@
-import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "discord.js";
+import { SlashCommandBuilder, SlashCommandOptionsOnlyBuilder, SlashCommandSubcommandsOnlyBuilder } from "discord.js";
 import { CommandRunFunction } from "../typings/CommandRunFunction";
 import { CommandOptions } from "../typings/CommandOptions";
 
 export class Command {
-    public readonly data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
+    public readonly data: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandOptionsOnlyBuilder;
     public readonly cooldown: number;
     public readonly run: CommandRunFunction;
 

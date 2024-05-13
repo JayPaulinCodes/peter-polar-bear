@@ -4,9 +4,11 @@ on: push
 
 jobs:
   compile:
+    name: Compile Project
     uses: ./.github/workflows/compile-project.yml
 
-  build:
+  package:
+    name: Package Project
     runs-on:
       - self-hosted
       - Linux
@@ -16,6 +18,7 @@ jobs:
 
     env:
       BRANCH_NAME: ${{ github.ref_name }}
+      OUTPUT_NAME: "${{ github.sha }}-packed"
 
     steps:
       - name: Download artifact
@@ -28,11 +31,10 @@ jobs:
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: actions/upload-artifact@v4
         with:
-          name: latest-artifact
+          name: ${{ env.OUTPUT_NAME }}
           path: |
             package.json
             package-lock.json
             assets/
             dist/
             ptero/
-          overwrite: true

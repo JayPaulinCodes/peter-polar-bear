@@ -1,147 +1,19 @@
 export enum ChannelName {
 
-    // Chain of Command Channels
-    ADMINISTRATION = "administration",
-    SENIOR_STAFF = "senior-staff",
-    STAFF = "staff",
-    SIT = "s-i=t",
-    SUB_LEADS = "sub-leads",
-    SUB_COMMUNICATION = "sub-communication",
-    ADMINISTRATION_VC = "Admin",
-    SENIOR_STAFF_VC = "Senior Staff",
-    STAFF_VC = "Staff",
-    SIT_VC = "Staff in Training",
-    STAFF_10_1_1 = "Staff 10-1 #1",
+    // Newspaper Stand
+    ANNOUNCEMENTS = "announcements",
+    ROLE_SHOP = "role-shop",
+    GETTING_STARTED = "getting-started",
+    
+    // Coding Corner
 
-    // Voting Channels
-    ADMIN_VOTING = "admin-voting",
-    SENIOR_STAFF_VOTING = "senior-staff-voting",
-    STAFF_VOTING = "staff-voting",
-    SIT_VOTING = "sit-voting",
-    SUB_VOTING = "sub-voting",
+    // Coffee Table
+    GAME_ROOM = "Game Room 1",
 
-    // General Channels
-    DEPT_ANNOUNCEMENTS = "dept-announcements",
-    DOJ_ANNOUNCEMENTS = "doj-announcements",
-    RP_ANNOUNCEMENTS = "rp-announcements",
-    INTRODUCTIONS = "introductions",
-    IMPORTANT_LINKS = "important-links",
-    LEAVE_OF_ABSENCES = "leave-of-absences",
-    COMMENDATIONS = "commendations",
-    CABIN = "the-cabin",
-    GENERAL_QUESTIONS = "general-questions",
-    QUESTIONS_FOR_STAFF = "questions-for-staff",
-    REQUEST_10_12 = "10-12-requests",
-    DEPT_PHOTOS = "dept-photos",
-    DEPT_PHOTO_CONTEST = "dept-photo-contest",
-    CABIN_VC = "The Cabin",
-    PUBLIC_10_1_1 = "10-1 Channel #1",
-    DEPT_MEETING_ROOM = "Dept Meeting Room",
-    AFK = "AFK",
+    // DoJRP
+    CLIPS_N_SHIT = "clits-n-shit",
+    PATROL_VOICE = "Patrol Voice #1",
+    TEN_ONE = "10-1 #1",
 
-    // Patrol Voice Channels
-    SERVER_1 = "Server 1",
-    SERVER_2 = "Server 2",
-    SERVER_3 = "Server 3",
-    RA_1 = "10-12 #1",
-    MEDIA_RA_1 = "Media 10-12 #1",
-    SUB_OPERATIONS_1 = "Sub Operations #1",
-
-    // Development Channels
-    ERROR_LOGS = "error-logs",
-    GENERAL_LOGS = "general-logs",
-    VOTING_LOGS = "voting-logs",
-    FTO_LEAD_LOGS = "fto-lead-logs",
-
-    // FTO Ride Along Channels
-    RIDE_ALONG_REQUEST = "ride-along-request",
-    FTO_FTA_CHAT = "fto-fta-chat",
-    TRAINEE_FTO_CHAT = "trainee-fto-chat",
-    FTO_RA_1 = "FTO 10-12 #1",
-
-    // Continuing Education Channels
-    TRAINING_ANNOUNCEMENTS = "training-announcements",
-    TRAINING_ROOM_1 = "Training Room #1",
-
-    // Warrant Services Channels
-    WSU_ANNOUNCEMENTS = "wsu-announcements",
-    WSU_TRAININGS = "wsu-trainings",
-    WSU_OPS_REQUEST = "wsu-ops-request",
-    WSU_PED_APPROVAL = "wsu-ped-approval",
-    WSU_LEADS = "wsu-leads",
-    WSU_SUPERVISORS = "wsu-supervisors",
-    WSU_TEAM_LEADS = "wsu-team-leads",
-    WARRANT_SERVICES = "warrant-services",
-    WSU_PHOTOS = "wsu-photos",
-    WSU_ASK_COC = "ask-wsu-coc",
-    WSU_SUPERVISORS_VC = "WSU Supervisors",
-    WSU_TEAM_LEADS_VC = "WSU Team Leads",
-    WARRANT_SERVICES_VC = "Warrant Services",
-    WSU_TRAINING_ROOM = "WSU Training Room",
-    WSU_TRAINEE_ROOM = "WSU Trainee Room",
-    WSU_RA_1 = "WSU 10-12 #1",
-
-    // Traffic Enforcement Channels
-    TED_ANNOUNCEMENTS = "ted-announcements",
-    TED_TRAININGS = "ted-trainings",
-    TED_LEADS = "ted-leads",
-    TED_SUPERVISORS = "ted-supervisors",
-    TED_ADVISORS = "ted-advisors",
-    TRAFFIC_ENFORCEMENT = "traffic-enforcement",
-    TED_PHOTOS = "ted-photos",
-    TED_ASK_COC = "ask-ted-coc",
-    TED_SUPERVISORS_VC = "TED Supervisors",
-    TED_ADVISORS_VC = "TED Advisors",
-    TRAFFIC_ENFORCEMENT_VC = "Traffic Enforcement",
-    TED_TRAINING_ROOM = "TED Training Room",
-    TED_TRAINEE_ROOM = "TED Trainee Room",
-    TED_RA_1 = "TED 10-12 #1",
-
-    // Wildlife Ranger Channels
-    WLR_ANNOUNCEMENTS = "wlr-announcements",
-    WLR_TRAININGS = "wlr-trainings",
-    WLR_LEADS = "wlr-leads",
-    WLR_SUPERVISORS = "wlr-supervisors",
-    SENIOR_RANGERS = "senior-rangers",
-    WILDLIFE_RANGERS = "wildlife-rangers",
-    WLR_PHOTOS = "wlr-photos",
-    WLR_ASK_COC = "ask-wlr-coc",
-    WLR_SUPERVISORS_VC = "WLR Supervisors",
-    SENIOR_RANGERS_VC = "Senior Rangers",
-    WILDLIFE_RANGERS_VC = "Wildlife Rangers",
-    WLR_TRAINING_ROOM = "WLR Training Room",
-    WLR_TRAINEE_ROOM = "WLR Trainee Room",
-    WLR_RA_1 = "WLR 10-12 #1",
-
-    // Criminal Investigations Channels
-    CID_ANNOUNCEMENTS = "cid-announcements",
-    CID_TRAININGS = "cid-trainings",
-    CID_LEADS = "cid-leads",
-    CID_SUPERVISORS = "cid-supervisors",
-    CID_SENIOR_INVESTIGATORS = "cid-senior-investigators",
-    CRIMINAL_INVESTIGATIONS = "criminal-investigations",
-    CID_PHOTOS = "cid-photos",
-    CID_ASK_COC = "ask-cid-coc",
-    CID_SUPERVISORS_VC = "CID Supervisors",
-    CID_SENIOR_INVESTIGATORS_VC = "CID Senior Investigators",
-    CRIMINAL_INVESTIGATIONS_VC = "Criminal Investigations",
-    CID_TRAINING_ROOM = "CID Training Room",
-    CID_TRAINEE_ROOM = "CID Trainee Room",
-    CID_RA_1 = "CID 10-12 #1",
-
-    // Canine Unit Channels
-    CANINE_ANNOUNCEMENTS = "canine-announcements",
-    CANINE_TRAININGS = "canine-trainings",
-    CANINE_LEADS = "canine-leads",
-    CANINE_SUPERVISORS = "canine-supervisors",
-    CANINE_SENIORS = "canine-seniors",
-    CANINE_UNIT = "canine-unit",
-    CANINE_PHOTOS = "canine-photos",
-    CANINE_ASK_COC = "ask-k9-coc",
-    CANINE_SUPERVISORS_VC = "Canine Supervisors",
-    CANINE_SENIORS_VC = "Canine Seniors",
-    CANINE_UNIT_VC = "Canine Unit",
-    CANINE_TRAINING_ROOM = "Canine Training Room",
-    CANINE_TRAINEE_ROOM = "Canine Trainee Room",
-    CANINE_RA_1 = "Canine 10-12 #1",
+    // Office Channels
 }

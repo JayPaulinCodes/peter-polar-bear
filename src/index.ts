@@ -9,7 +9,7 @@ const client = new ExtendedClient({
     clientOptions: {
         presence: {
             status: "dnd",
-            activities: [ { name: "Over Blaine County", type: ActivityType.Watching } ]
+            activities: [ { name: "The Campfire", type: ActivityType.Watching } ]
         },
         intents: [
             GatewayIntentBits.Guilds,
@@ -31,7 +31,7 @@ const client = new ExtendedClient({
         ]
     },
     loggerOptions: {
-        logLevel: process.env.NODE_ENV === "development" ? "debug" : "info",
+        logLevel: "debug",
         output: {
             useZuluTime: false,
             console: {
@@ -42,35 +42,7 @@ const client = new ExtendedClient({
             }
         }
     },
-    initFunctions: [
-        // Chache messages sent in all photo channels in the last 45 days
-        async (client: ExtendedClient) => {
-            client.logger.log("Caching messages from photo channels sent in the last 45 days");
-            const agedSnowflake = SnowflakeUtil.generate({ 
-                timestamp: Date.now() - (45 * 24 * 60 * 60 * 1000),
-                workerId: 0n,
-                processId: 0n
-            }).toString();
-            const channels = Object.keys(Constants.PhotoChannels).map(elem => tryGetChannelByName(client, elem));
-            const filteredChannels = channels.filter(Filters.notEmpty);
-            const cachedMessages = await Promise.all(filteredChannels.map(elem => {
-                if (elem.isDMBased()) return null;
-                if (!elem.isTextBased()) return null;
-                return elem.messages.fetch({
-                    after: agedSnowflake,
-                    cache: true
-                });
-            }).filter(Filters.notNull));
-            client.logger.log(format(
-                "Finished caching photo channel messages, cached a total of %s messages", 
-                cachedMessages.map(col => col.size).reduce((accumulator, currentValue) => accumulator + currentValue)));
-        }
-    ]
+    initFunctions: []
 });
-
-client.ignoredCustomIds.get("buttons")?.push(
-    "rideAlongAcceptance_confirm",
-    "rideAlongAcceptance_cancel"
-);
 
 client.start(process.env.DISCORD_TOKEN);

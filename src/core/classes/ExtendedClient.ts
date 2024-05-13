@@ -6,10 +6,10 @@ import { Stats } from "node:fs";
 import { readdir, rm, stat } from "fs/promises";
 import { dirname } from "node:path";
 import { AnySelectMenuInteraction, BaseInteraction, ButtonInteraction, ChatInputCommandInteraction, Client, ClientEvents, Collection, ContextMenuCommandInteraction, GatewayIntentBits, ModalSubmitInteraction, RESTPostAPIChatInputApplicationCommandsJSONBody, RESTPostAPIContextMenuApplicationCommandsJSONBody } from "discord.js";
-import { Command, ExtendedClientOptions, Event, ContextCommand, toUnixTime, Button, StaticMessage, EmbedHelper, SelectMenu, homeGuild, tryGetChannelByName, tryGetRoleByName, errorLog, cardinalToOrdinal } from "@bot/core";
-import { ChannelName, RoleName } from "@bot/constants";
+import { Command, ExtendedClientOptions, Event, ContextCommand, toUnixTime, Button, StaticMessage, SelectMenu, errorLog, cardinalToOrdinal } from "@bot/core";
 import { DbLogic } from "@bot/database";
 import { MysqlError } from "mysql";
+import { EmbedHelper } from "@bot/constants";
 
 const globPromise = promisify(glob);
 
@@ -543,7 +543,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to execute the command: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the DepuTRON team for investigation.\nIf you keep encountering errors please reach out to BCSO CoC.") ]
+                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
                 await errorLog(client, error, interaction);
 
@@ -623,7 +623,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to execute the command: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this context command!\nThis error has already been reported to the DepuTRON team for investigation.\nIf you keep encountering errors please reach out to BCSO CoC.") ]
+                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
                 await errorLog(client, error, interaction);
                 
@@ -706,7 +706,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to use the button: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this button!\nThis error has already been reported to the DepuTRON team for investigation.\nIf you keep encountering errors please reach out to BCSO CoC.") ]
+                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
                 await errorLog(client, error, interaction);
                 
@@ -816,7 +816,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to use the select menu: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this select menu!\nThis error has already been reported to the DepuTRON team for investigation.\nIf you keep encountering errors please reach out to BCSO CoC.") ]
+                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
 
                 await errorLog(client, error, interaction);
