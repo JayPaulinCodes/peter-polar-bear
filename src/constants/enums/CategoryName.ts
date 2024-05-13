@@ -1,7 +1,7 @@
 export enum CategoryName {
-    WSU = "Warrant Services Unit",
-    CID = "Criminal Investigation Division",
-    WLR = "Wildlife Rangers",
-    TED = "Traffic Enforcement Division",
-    K9 = "Canine Unit",
+    NEWSPAPER_STAND = "Newspaper Stand",
+    CODING_CORNER = "Coding Corner",
+    COFFEE_TABLE = "Coffee Table",
+    DOJRP = "DoJRP",
+    OFFICE_CHANNELS = "Office Channels",
 }

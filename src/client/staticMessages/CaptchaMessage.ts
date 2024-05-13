@@ -1,24 +1,19 @@
 import { BaseMessageOptions, GuildTextBasedChannel, Message } from "discord.js";
 import { ExtendedClient, StaticMessage, homeGuildId, tryGetChannelByName } from "@bot/core";
 import { DbLogic } from "@bot/database";
-import { ChannelName, Constants } from "@bot/constants";
+import { ChannelName, ComponentHelper } from "@bot/constants";
 
 export default new StaticMessage({
-    name: "ftoRideAlongQueue",
-    updateDelay: 15 * 60 * 1000,
+    name: "captchaMessage",
     update: async (client: ExtendedClient) => {
-        client.logger.debug("Starting update for static message 'ftoRideAlongQueue'");
+        client.logger.debug("Starting update for static message 'captchaMessage'");
         const GUILD_ID = homeGuildId();
-        const CHANNEL_ID = tryGetChannelByName(client, ChannelName.RIDE_ALONG_REQUEST)?.id ?? "1175869166117453866";
-        const DB_NAME = "ftoRideAlongQueue";
+        const CHANNEL_ID = tryGetChannelByName(client, ChannelName.GETTING_STARTED)?.id ?? "1239590456879353927";
+        const DB_NAME = "captchaMessage";
 
-        const dbRideAlongs = await DbLogic.getAllFtoRideAlongs();
-        dbRideAlongs.sort((a, b) => a.queuePos - b.queuePos);
-
-        const embed = client.embeds.ftoRideAlong(dbRideAlongs);
         const messageContent: BaseMessageOptions = {
-            embeds: [ embed ],
-            components: Constants.RideAlongActions
+            embeds: [ client.embeds.captchaVerify() ],
+            components: [ ComponentHelper.captchaButton() ]
         }
         
         const dbItem = await DbLogic.getStaticMessage(DB_NAME);
@@ -50,6 +45,6 @@ export default new StaticMessage({
             await message.edit(messageContent);
         }
 
-        client.logger.log("Finished update for static message 'ftoRideAlongQueue'");
+        client.logger.log("Finished update for static message 'captchaMessage'");
     }
 });

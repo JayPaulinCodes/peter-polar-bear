@@ -1,7 +1,7 @@
 import { format } from "node:util";
 import { ApplicationCommandType, ContextMenuCommandBuilder, ModalSubmitInteraction } from "discord.js";
 import { ContextCommand, ExtendedClient } from "@bot/core";
-import { CategoryName, Constants, RoleName } from "@bot/constants";
+import { CategoryName, Constants, ModalHelper, RoleName } from "@bot/constants";
 
 export default new ContextCommand({
     data: new ContextMenuCommandBuilder()
@@ -10,12 +10,11 @@ export default new ContextCommand({
         .setDMPermission(false),
     run: async ({ client, interaction }) => {
         const allowedRoles = [
-            RoleName.ADMINISTRATION,
-            RoleName.SENIOR_STAFF,
-            RoleName.DEPUTRON_TEAM,
+            RoleName.DEV_DADDY,
+            RoleName.CULT_LEADER
         ]
 
-        await interaction.deferReply({ ephemeral: true });
+        // await interaction.deferReply({ ephemeral: true });
 
         // Fetch the guild
         const guild = interaction.guild;
@@ -67,15 +66,6 @@ export default new ContextCommand({
             return;
         }
 
-        // Generate the channel's permissions
-        switch (targetChannel.parent?.name) {
-            case CategoryName.WSU: allowedRoles.push(RoleName.WSU_COORDINATOR, RoleName.WSU_SUPERVISOR); break;
-            case CategoryName.CID: allowedRoles.push(RoleName.CID_COORDINAOR, RoleName.CID_SUPERVISOR); break;
-            case CategoryName.WLR: allowedRoles.push(RoleName.WLR_COORDINATOR, RoleName.WLR_SUPERVISOR); break;
-            case CategoryName.TED: allowedRoles.push(RoleName.TED_COORDINATOR, RoleName.TED_SUPERVISOR); break;
-            case CategoryName.K9: allowedRoles.push(RoleName.K9_COORDINATOR, RoleName.K9_SUPERVISOR); break;
-        }
-
         // Check the user's permissions
         const allowedRolesName = allowedRoles.map(role => role.toString());
         if (member.roles.cache.filter(elem => allowedRolesName.includes(elem.name)).size === 0) {
@@ -97,7 +87,7 @@ export default new ContextCommand({
             });
         });
 
-        await interaction.showModal(Constants.EditMessageInput(format("adminEditMessage_%s", interaction.id)));
+        await interaction.showModal(ModalHelper.EditMessageInput(format("adminEditMessage_%s", interaction.id)));
     }
 });
 

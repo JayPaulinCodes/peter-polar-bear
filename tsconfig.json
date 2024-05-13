@@ -21,7 +21,8 @@
         "@bot/client": [ "client/index" ],
         "@bot/constants": [ "constants/index" ],
         "@bot/core": [ "core/index" ],
-        "@bot/database": [ "database/index" ]
+        "@bot/database": [ "database/index" ],
+        "@packages/captcha": [ "packages/captcha/index" ]
       },
 
       // Emit

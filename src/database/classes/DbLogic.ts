@@ -1,4 +1,5 @@
-import { DbFtoRideAlong, DbManager, DbStaticMessage, DbSubdivisionInfo } from "@bot/database";
+import { DbCaptcha, DbManager, DbStaticMessage } from "@bot/database";
+import { User } from "discord.js";
 import { FieldPacket, RowDataPacket } from "mysql2";
 
 export class DbLogic {
@@ -78,24 +79,13 @@ export class DbLogic {
         return await DbLogic.getStaticMessageById(item.id);
     }
 
-    public static async getAllFtoRideAlongs(): Promise<DbFtoRideAlong[]> {
+    public static async getCaptchaById(id: number): Promise<DbCaptcha | null> {
         // Define variables
-        const query = "SELECT * FROM `fto-ride-along`";
-
-        // Execute query
-        const [ results, fields ] = await DbManager.select<DbFtoRideAlong[]>(query);
-
-        // Process results
-        return results ?? [];
-    }
-
-    public static async getFtoRideAlongById(id: string): Promise<DbFtoRideAlong | null> {
-        // Define variables
-        const query = "SELECT * FROM `fto-ride-along` WHERE `id` = ?";
+        const query = "SELECT * FROM `captchas` WHERE `id` = ?";
         const params = [ id ];
 
         // Execute query
-        const [ results, fields ] = await DbManager.select<DbFtoRideAlong[]>(query, params);
+        const [ results, fields ] = await DbManager.select<DbCaptcha[]>(query, params);
 
         // Process results
         if (results.length === 0) return null;
@@ -103,117 +93,53 @@ export class DbLogic {
         return results[0];
     }
 
-    public static async createFtoRideAlong(userId: string, username: string, rideAlongNum: number, queuePos: number): Promise<DbFtoRideAlong | null> {
+    public static async getCaptchaByUserId(userId: string): Promise<DbCaptcha | null> {
         // Define variables
-        const query = "INSERT INTO `fto-ride-along` (`id`, `username`, `rideAlongNum`, `queuePos`) VALUES (?, ?, ?, ?)";
-        const params = [ userId, username, rideAlongNum, queuePos ];
+        const query = "SELECT * FROM `captchas` WHERE `assignedUser` = ?";
+        const params = [ userId ];
+
+        // Execute query
+        const [ results, fields ] = await DbManager.select<DbCaptcha[]>(query, params);
+
+        // Process results
+        if (results.length === 0) return null;
+
+        return results[0];
+    }
+
+    public static async getCaptchaByUser(user: User): Promise<DbCaptcha | null> {
+        // Define variables
+        const query = "SELECT * FROM `captchas` WHERE `assignedUser` = ?";
+        const params = [ user.id ];
+
+        // Execute query
+        const [ results, fields ] = await DbManager.select<DbCaptcha[]>(query, params);
+
+        // Process results
+        if (results.length === 0) return null;
+
+        return results[0];
+    }
+
+    public static async createCaptcha(assignedUser: string, image: Buffer, dataUrl: string, value: string, expires: Date): Promise<DbCaptcha | null> {
+        // Define variables
+        const query = "INSERT INTO captchas (assignedUser, image, dataURL, value, expires) VALUES (?, BINARY(?), ?, ?, ?)";
+        const params = [ assignedUser, image, dataUrl, value, expires ];
 
         // Execute query
         const [ results, fields ] = await DbManager.insert(query, params);
 
-        return DbLogic.getFtoRideAlongById(userId);
+        return DbLogic.getCaptchaById(results.insertId);
     }
 
-    public static async updateFtoRideAlong(item: Partial<DbFtoRideAlong>): Promise<DbFtoRideAlong | null> {
-        if (item.id === undefined) return null;
-        
+    public static async deleteCaptchaById(id: number): Promise<void> {
         // Define variables
-        const queryValues: any[][] = [];
-        if (item.rideAlongNum !== undefined) queryValues.push([ "`rideAlongNum` = ?", item.rideAlongNum]);
-        if (item.username !== undefined) queryValues.push([ "`username` = ?", item.username]);
-        if (item.queuePos !== undefined) queryValues.push([ "`queuePos` = ?", item.queuePos]);
-
-        const query = `UPDATE \`fto-ride-along\` SET ${queryValues.map(elem => elem[0]).join(", ")} WHERE \`id\` = ?`;
-        const params = queryValues.map(elem => elem[1]);
-        params.push(item.id);
-
-        // Execute query
-        await DbManager.update(query, params);
-        
-        // Return updated user
-        return await DbLogic.getFtoRideAlongById(item.id);
-    }
-
-    public static async deleteFtoRideAlongById(id: string): Promise<void> {
-        // Define variables
-        const query = "DELETE FROM `fto-ride-along` WHERE `id` = ?";
+        const query = "DELETE FROM `captchas` WHERE `id` = ?";
         const params = [ id ];
 
         // Execute query
         const [ results, fields ] = await DbManager.delete(query, params);
 
-        // Process results
         return;
-    }
-
-    public static async deleteAllFtoRideAlong(): Promise<void> {
-        // Define variables
-        const query = "DELETE FROM `fto-ride-along`";
-
-        // Execute query
-        const [ results, fields ] = await DbManager.delete(query);
-
-        // Process results
-        return;
-    }
-    
-    public static async getAllSubdivisionInfo(): Promise<DbSubdivisionInfo[]> {
-        // Define variables
-        const query = "SELECT * FROM `subdivision-info`";
-
-        // Execute query
-        const [ results, fields ] = await DbManager.select<DbSubdivisionInfo[]>(query);
-
-        // Process results
-        return results;
-    }
-    
-    public static async getSubdivisionInfoById(id: number): Promise<DbSubdivisionInfo | null> {
-        // Define variables
-        const query = "SELECT * FROM `subdivision-info` WHERE `id` = ?";
-        const params = [ id ];
-
-        // Execute query
-        const [ results, fields ] = await DbManager.select<DbSubdivisionInfo[]>(query, params);
-
-        // Process results
-        if (results.length === 0) return null;
-
-        return results[0];
-    }
-    
-    public static async getSubdivisionInfoByAbbr(abbreaviation: string): Promise<DbSubdivisionInfo | null> {
-        // Define variables
-        const query = "SELECT * FROM `subdivision-info` WHERE `abbreaviation` = ?";
-        const params = [ abbreaviation ];
-
-        // Execute query
-        const [ results, fields ] = await DbManager.select<DbSubdivisionInfo[]>(query, params);
-
-        // Process results
-        if (results.length === 0) return null;
-
-        return results[0];
-    }
-
-    public static async updateSubdivisionInfo(item: Partial<DbFtoRideAlong>): Promise<DbFtoRideAlong | null> {
-        if (item.id === undefined) return null;
-        
-        // Define variables
-        const queryValues: any[][] = [];
-        if (item.abbreaviation !== undefined) queryValues.push([ "`abbreaviation` = ?", item.abbreaviation]);
-        if (item.name !== undefined) queryValues.push([ "`name` = ?", item.name]);
-        if (item.applicationsOpen !== undefined) queryValues.push([ "`applicationsOpen` = ?", item.applicationsOpen]);
-        if (item.minimumRank !== undefined) queryValues.push([ "`minimumRank` = ?", item.minimumRank]);
-
-        const query = `UPDATE \`subdivision-info\` SET ${queryValues.map(elem => elem[0]).join(", ")} WHERE \`id\` = ?`;
-        const params = queryValues.map(elem => elem[1]);
-        params.push(item.id);
-
-        // Execute query
-        await DbManager.update(query, params);
-        
-        // Return updated user
-        return await DbLogic.getFtoRideAlongById(item.id);
     }
 }

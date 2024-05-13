@@ -2,7 +2,6 @@ export * from "./classes/Button";
 export * from "./classes/Command";
 export * from "./classes/CommonFunctions";
 export * from "./classes/ContextCommand";
-export * from "./classes/EmbedHelper";
 export * from "./classes/Event";
 export * from "./classes/ExtendedClient";
 export * from "./classes/SelectMenu";

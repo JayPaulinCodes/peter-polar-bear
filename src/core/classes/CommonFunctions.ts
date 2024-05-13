@@ -41,7 +41,7 @@ export function splitMessage(message: string, length: number = 2000, delimeter: 
 }
 
 export function homeGuildId(): string {
-    return process.env.GUILD_ID ?? "1175270287110045828";
+    return process.env.GUILD_ID ?? "1239027847918653470";
 }
 
 export function homeGuild(client: ExtendedClient): Guild | undefined{
@@ -64,54 +64,54 @@ export function tryGetRoleByName(client: ExtendedClient, roleName: string): Role
 
 export async function generalLog(client: ExtendedClient, message: string) {
     client.logger.log(message);
-    const channel = tryGetChannelByName(client, ChannelName.GENERAL_LOGS);
-    if (channel === undefined || !channel.isTextBased()) return;
-    await channel.send({
-        content: format("[<t:%s:F>] %s", toUnixTime(), message)
-    });
+    // const channel = tryGetChannelByName(client, ChannelName.GENERAL_LOGS);
+    // if (channel === undefined || !channel.isTextBased()) return;
+    // await channel.send({
+    //     content: format("[<t:%s:F>] %s", toUnixTime(), message)
+    // });
 }
 
 export async function ftoLog(client: ExtendedClient, message: string) {
     client.logger.log(message);
-    const channel = tryGetChannelByName(client, ChannelName.FTO_LEAD_LOGS);
-    if (channel === undefined || !channel.isTextBased()) return;
-    await channel.send({
-        content: format("[<t:%s:F>] %s", toUnixTime(), message)
-    });
+    // const channel = tryGetChannelByName(client, ChannelName.FTO_LEAD_LOGS);
+    // if (channel === undefined || !channel.isTextBased()) return;
+    // await channel.send({
+    //     content: format("[<t:%s:F>] %s", toUnixTime(), message)
+    // });
 }
 
 export async function votingLog(client: ExtendedClient, message: string) {
     client.logger.log(message);
-    const channel = tryGetChannelByName(client, ChannelName.VOTING_LOGS);
-    if (channel === undefined || !channel.isTextBased()) return;
-    await channel.send({
-        content: format("[<t:%s:F>] %s", toUnixTime(), message)
-    });
+    // const channel = tryGetChannelByName(client, ChannelName.VOTING_LOGS);
+    // if (channel === undefined || !channel.isTextBased()) return;
+    // await channel.send({
+    //     content: format("[<t:%s:F>] %s", toUnixTime(), message)
+    // });
 }
 
 export async function errorLog(client: ExtendedClient, error: Error, interaction?: BaseInteraction) {
     // Log to error channel
-    const guild = homeGuild(client);
-    if (guild === undefined) return;
+    // const guild = homeGuild(client);
+    // if (guild === undefined) return;
 
-    const errorChannel = tryGetChannelByName(client, ChannelName.ERROR_LOGS);
-    if (errorChannel === undefined || !errorChannel.isTextBased()) return;
+    // const errorChannel = tryGetChannelByName(client, ChannelName.ERROR_LOGS);
+    // if (errorChannel === undefined || !errorChannel.isTextBased()) return;
 
-    const deputronTeamRole = tryGetRoleByName(client, RoleName.DEPUTRON_TEAM);
+    // const deputronTeamRole = tryGetRoleByName(client, RoleName.DEPUTRON_TEAM);
 
-    const interactionVal = interaction === undefined ? "N/A" : interaction.id;
-    const channelId = interaction === undefined ? "N/A" : interaction.channel === null ? "Unknown" : `<#${interaction.channelId}> (${interaction.channelId})`;
-    const userId = interaction === undefined ? "N/A" : interaction.member === null ? "Unknown" : `<@${interaction.member.user.id}> (${interaction.member.user.id})`;
-    const message = format(
-        "%s **An error occured**\n__Timestamp:__ <t:%s:F> (<t:%s:R>)\n__Interaction ID:__ %s\n__Channel ID:__ %s\n__User ID:__ %s\n__Associated Log File:__ %s\n```%s```",
-        deputronTeamRole === undefined ? "" : deputronTeamRole?.toString(),
-        toUnixTime(),
-        toUnixTime(),
-        interactionVal,
-        channelId,
-        userId,
-        client.logger.stream?.path ?? "N/A",
-        error.stack?.toString() ?? "Unknown")
+    // const interactionVal = interaction === undefined ? "N/A" : interaction.id;
+    // const channelId = interaction === undefined ? "N/A" : interaction.channel === null ? "Unknown" : `<#${interaction.channelId}> (${interaction.channelId})`;
+    // const userId = interaction === undefined ? "N/A" : interaction.member === null ? "Unknown" : `<@${interaction.member.user.id}> (${interaction.member.user.id})`;
+    // const message = format(
+    //     "%s **An error occured**\n__Timestamp:__ <t:%s:F> (<t:%s:R>)\n__Interaction ID:__ %s\n__Channel ID:__ %s\n__User ID:__ %s\n__Associated Log File:__ %s\n```%s```",
+    //     deputronTeamRole === undefined ? "" : deputronTeamRole?.toString(),
+    //     toUnixTime(),
+    //     toUnixTime(),
+    //     interactionVal,
+    //     channelId,
+    //     userId,
+    //     client.logger.stream?.path ?? "N/A",
+    //     error.stack?.toString() ?? "Unknown")
     
-    await errorChannel.send({ content: message });
+    // await errorChannel.send({ content: message });
 }
