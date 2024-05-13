@@ -1,0 +1,39 @@
+name: CI Build
+
+on: push
+
+jobs:
+  build_vars:
+    uses: ./.github/workflows/build-variables.yml
+
+  compile:
+    uses: ./.github/workflows/compile-project.yml
+
+  build:
+    runs-on:
+      - self-hosted
+      - Linux
+
+    needs:
+      - build_vars
+      - compile
+
+    steps:
+      - name: Download artifact
+        if: ${{ needs.build_vars.outputs.branch == 'main' || needs.build_vars.outputs.branch == 'master' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ needs.compile.outputs.artifact-name }}
+
+      - name: Upload artifact
+        if: ${{ needs.build_vars.outputs.branch == 'main' || needs.build_vars.outputs.branch == 'master' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: latest-artifact
+          path: |
+            package.json
+            package-lock.json
+            assets/
+            dist/
+            ptero/
+          overwrite: true
