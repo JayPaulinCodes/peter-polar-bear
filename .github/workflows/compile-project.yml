@@ -4,7 +4,7 @@ on:
   workflow_call:
     outputs:
       artifact-name:
-        value: Compiled Project
+        value: ${{ jobs.compile-project.outputs.artifact-name }}
       artifact-id:
         value: ${{ jobs.compile-project.outputs.artifact-id }}
       artifact-url:
@@ -12,11 +12,16 @@ on:
 
 jobs:
   compile-project:
+    name: Compile Project
     runs-on:
       - self-hosted
       - Linux
 
+    env:
+      OUTPUT_NAME: "${{ github.sha }}-compiled"
+
     outputs:
+      artifact-name: ${{ env.OUTPUT_NAME }}
       artifact-id: ${{ steps.artifact-upload.outputs.artifact-id }}
       artifact-url: ${{ steps.artifact-upload.outputs.artifact-url }}
 
@@ -39,6 +44,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         id: artifact-upload
         with:
-          name: Compiled Project
+          name: ${{ env.OUTPUT_NAME }}
           retention-days: 1
           path: ./*
