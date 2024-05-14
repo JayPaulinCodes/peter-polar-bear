@@ -38,3 +38,35 @@ jobs:
             assets/
             dist/
             ptero/
+
+  release:
+    name: Release Project
+    runs-on:
+      - self-hosted
+      - Linux
+
+    needs:
+      - package
+
+    env:
+      BRANCH_NAME: ${{ github.ref_name }}
+      OUTPUT_NAME: "${{ github.sha }}-packed"
+
+    steps:
+      - name: Download artifact
+        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.OUTPUT_NAME }}
+      
+      - name: Copy artifact
+        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
+        run: Copy-Item "${{ env.OUTPUT_NAME }}" -Destination "pterodactyl-package.zip"
+
+      - name: Create release
+        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.OUTPUT_NAME }}
+            pterodactyl-package.zip
