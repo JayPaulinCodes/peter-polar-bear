@@ -61,7 +61,7 @@ jobs:
       
       - name: Copy artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
-        run: cp "${{ env.OUTPUT_NAME }}" "pterodactyl-package.zip"
+        run: cp "${{ env.OUTPUT_NAME }}.zip" "pterodactyl-package.zip"
 
       - name: Create release
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
