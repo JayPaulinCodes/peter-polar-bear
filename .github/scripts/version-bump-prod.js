@@ -4,6 +4,8 @@ const package = require("../../package.json");
 const BETA_VERSION_REGEX = /(\d+\.\d+\.\d+-beta\d+$)/g;
 const PACKAGE_FIELD_REGEX = /(\"version\": \".*\")/g;
 
+console.log("[STARTUP]: Starting version bump script for production version.");
+
 // Check if the current version exists
 const currentVersion = package?.version;
 if (currentVersion === undefined)
