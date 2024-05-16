@@ -1,56 +1,21 @@
 name: CI Build Production
 
 on:
-  push:
-    branches:
-      - "main"
-      - "master"
-    paths:
-      - "**"
-      - "!package.json"
+  workflow_run:
+    workflows: 
+      - Version Bump Prod
+    branches: 
+      - main
+      - master
+    types: 
+      - completed
 
 jobs:
-  version-bump:
-    name: Bump Version
-    runs-on:
-      - self-hosted
-      - Linux
-
-    env:
-      BRANCH_NAME: ${{ github.ref_name }}
-
-    outputs:
-      bumped-version: ${{ steps.load-package-data.outputs.bumped-version }}
-
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4.1.6
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20.x"
-          registry-url: "https://registry.npmjs.org"
-
-      - name: Bump package version
-        run: node .github/scripts/version-bump-prod.js
-
-      - name: Push package.json
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: "chore(npm): Bumped package version"
-          committer_name: Version Bumper
-          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
-          add: "package.json"
-
   compile-project:
     name: Compile Project
     runs-on:
       - self-hosted
       - Linux
-
-    needs:
-      - version-bump
 
     env:
       OUTPUT_NAME: "${{ github.sha }}-compiled"
