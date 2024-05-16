@@ -131,10 +131,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           config-file-path: ./.github/configs/changelog-config.js
-          skip-version-file: true
-          skip-commit: true
-          skip-tag: true
-          skip-bump: true
 
       - name: Create release
         uses: softprops/action-gh-release@v2

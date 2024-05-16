@@ -2,6 +2,10 @@
 const config = require("conventional-changelog-conventionalcommits");
 
 module.exports = config({
+    "skip-version-file": true,
+    "skip-commit": true,
+    "skip-tag": true,
+    "skip-bump": true,
     "types": [
         { type: "chore", hidden: "Misc" },
         { type: "deprecate", section: "Deprecated" },
