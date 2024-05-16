@@ -129,7 +129,7 @@ jobs:
         id: create-changelog
         uses: TriPSs/conventional-changelog-action@v5
         with:
-          github-token: ${{ secrets.github_token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           skip-version-file: true
           skip-commit: true
           skip-tag: true
