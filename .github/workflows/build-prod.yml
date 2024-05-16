@@ -133,7 +133,7 @@ jobs:
           changelog_filename: CHANGELOG.md
           config_file: ./.github/configs/changelog-ci.json
           committer_username: Changelog Doctor
-          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          committer_email: github-actions[bot]@users.noreply.github.com
 
       - name: Create release
         uses: softprops/action-gh-release@v2

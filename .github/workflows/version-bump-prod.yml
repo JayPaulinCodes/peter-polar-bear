@@ -34,5 +34,5 @@ jobs:
         with:
           message: "chore(npm): Bumped package version"
           committer_name: Version Bumper
-          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          committer_email: github-actions[bot]@users.noreply.github.com
           add: "package.json"
