@@ -31,7 +31,7 @@ jobs:
       - name: Push package.json
         uses: EndBug/add-and-commit@v9
         with:
-          message: "chore(npm): Bumped package version"
+          message: "auto(package/version): Bumped package version"
           committer_name: Version Bumper
           committer_email: github-actions[bot]@users.noreply.github.com
           add: "package.json"
