@@ -9,13 +9,22 @@ on:
         value: ${{ jobs.compile-project.outputs.artifact-id }}
       artifact-url:
         value: ${{ jobs.compile-project.outputs.artifact-url }}
+      bumped-version:
+        value: ${{ jobs.compile-project.outputs.bumped-version }}
 
 jobs:
+  bump-version:
+    name: Bump Version
+    uses: ./.github/workflows/version-bump.yml
+
   compile-project:
     name: Compile Project
     runs-on:
       - self-hosted
       - Linux
+
+    needs:
+      - bump-version
 
     env:
       OUTPUT_NAME: "${{ github.sha }}-compiled"
@@ -24,6 +33,7 @@ jobs:
       artifact-name: ${{ env.OUTPUT_NAME }}
       artifact-id: ${{ steps.artifact-upload.outputs.artifact-id }}
       artifact-url: ${{ steps.artifact-upload.outputs.artifact-url }}
+      bumped-version: ${{ needs.bump-version.outputs.bumped-version }}
 
     steps:
       - name: Checkout Repo
