@@ -1,0 +1,25 @@
+name: Changelog CI
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  changelog-ci:
+    name: Compile Project
+    runs-on:
+      - self-hosted
+      - Linux
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Run Changelog CI
+        uses: saadmk11/changelog-ci@v1.1.2
+        with:
+          changelog_filename: CHANGELOG.md
+          config_file: ./.github/configs/changelog-ci.json
+          committer_username: Changelog Doctor
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
