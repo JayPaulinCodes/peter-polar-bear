@@ -34,10 +34,3 @@ jobs:
 
       - name: Compile project
         run: npm run build
-
-      - uses: actions/upload-artifact@v4
-        id: artifact-upload
-        with:
-          name: ${{ env.OUTPUT_NAME }}
-          retention-days: 1
-          path: ./*
