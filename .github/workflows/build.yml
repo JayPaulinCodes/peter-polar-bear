@@ -171,7 +171,7 @@ jobs:
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: softprops/action-gh-release@v2
         with:
-          tag: "v${{ needs.package.outputs.project-version }}"
+          tag_name: "v${{ needs.package.outputs.project-version }}"
           name: "v${{ needs.package.outputs.project-version }}"
           generate_release_notes: true
           prerelease: false
@@ -184,7 +184,7 @@ jobs:
         if: ${{ env.BRANCH_NAME == 'develop' }}
         uses: softprops/action-gh-release@v2
         with:
-          tag: "v${{ needs.package.outputs.project-version }}"
+          tag_name: "v${{ needs.package.outputs.project-version }}"
           name: "v${{ needs.package.outputs.project-version }}"
           generate_release_notes: true
           prerelease: true
