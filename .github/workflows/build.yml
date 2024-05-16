@@ -69,14 +69,13 @@ jobs:
       - name: Copy artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         run: |
-          ls
-          ls artifacts
-          cp "artifacts/${{ env.OUTPUT_NAME }}.zip" "artifacts/pterodactyl-package.zip"
+          tar -cvzf ${{ env.OUTPUT_NAME }}.tar.gz artifacts/
+          tar -cvzf pterodactyl-package.tar.gz artifacts/
 
       - name: Create release
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            "artifacts/${{ env.OUTPUT_NAME }}.zip"
-            "artifacts/pterodactyl-package.zip"
+            "${{ env.OUTPUT_NAME }}.tar.gz"
+            "pterodactyl-package.tar.gz"
