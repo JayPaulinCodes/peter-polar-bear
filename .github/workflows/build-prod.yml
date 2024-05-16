@@ -127,10 +127,9 @@ jobs:
 
       - name: Generate changelog
         id: create-changelog
-        uses: TriPSs/conventional-changelog-action@v5
+        uses: devjacob/changelog-generation
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          config-file-path: ./.github/configs/changelog-config.js
 
       - name: Create release
         uses: softprops/action-gh-release@v2
