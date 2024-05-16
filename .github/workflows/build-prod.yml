@@ -1,4 +1,4 @@
-name: CI Build
+name: CI Build Production
 
 on:
   push:
@@ -170,5 +170,5 @@ jobs:
           prerelease: false
           make_latest: true
           files: |
-            "${{ env.OUTPUT_NAME }}.tar.gz"
-            "pterodactyl-package.tar.gz"
+            ${{ env.OUTPUT_NAME }}.tar.gz
+            pterodactyl-package.tar.gz

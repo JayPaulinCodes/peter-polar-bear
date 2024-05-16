@@ -1,4 +1,4 @@
-name: CI Build
+name: CI Build Develop
 
 on:
   push:
@@ -164,4 +164,4 @@ jobs:
           prerelease: true
           make_latest: false
           files: |
-            "${{ env.OUTPUT_NAME }}.tar.gz"
+            ${{ env.OUTPUT_NAME }}.tar.gz
