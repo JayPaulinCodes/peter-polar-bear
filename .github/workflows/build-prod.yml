@@ -3,7 +3,6 @@ name: CI Build
 on:
   push:
     branches:
-      - "develop"
       - "main"
       - "master"
     paths:
@@ -33,12 +32,7 @@ jobs:
           node-version: "20.x"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Bump package version (beta)
-        if: ${{ env.BRANCH_NAME == 'develop' }}
-        run: node .github/scripts/version-bump-beta.js
-
-      - name: Bump package version (prod)
-        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
+      - name: Bump package version
         run: node .github/scripts/version-bump-prod.js
 
       - name: Push package.json
@@ -122,14 +116,12 @@ jobs:
 
     steps:
       - name: Download artifact
-        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ needs.compile-project.outputs.artifact-name }}
 
       - name: Upload artifact
         id: artifact-upload
-        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.OUTPUT_NAME }}
@@ -155,40 +147,28 @@ jobs:
 
     steps:
       - name: Download artifact
-        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.OUTPUT_NAME }}
           path: artifacts
       
-      - name: Copy artifact
-        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
+      - name: Zip artifact
         run: |
           tar -cvzf ${{ env.OUTPUT_NAME }}.tar.gz artifacts/
+      
+      - name: Zip ptero artifact
+        run: |
           tar -cvzf pterodactyl-package.tar.gz artifacts/
 
-      - name: Create release (prod)
-        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
+      - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "v${{ needs.package.outputs.project-version }}"
           name: "v${{ needs.package.outputs.project-version }}"
+          fail_on_unmatched_files: true
           generate_release_notes: true
           prerelease: false
           make_latest: true
-          files: |
-            "${{ env.OUTPUT_NAME }}.tar.gz"
-            "pterodactyl-package.tar.gz"
-
-      - name: Create release (beta)
-        if: ${{ env.BRANCH_NAME == 'develop' }}
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: "v${{ needs.package.outputs.project-version }}"
-          name: "v${{ needs.package.outputs.project-version }}"
-          generate_release_notes: true
-          prerelease: true
-          make_latest: false
           files: |
             "${{ env.OUTPUT_NAME }}.tar.gz"
             "pterodactyl-package.tar.gz"
