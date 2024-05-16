@@ -126,14 +126,14 @@ jobs:
           tar -cvzf pterodactyl-package.tar.gz artifacts/
 
       - name: Generate changelog
-        id: generate-changelog
-        uses: saadmk11/changelog-ci@v1.1.2
+        id: create-changelog
+        uses: TriPSs/conventional-changelog-action@v5
         with:
-          release_version: ${{ needs.package.outputs.project-version }}
-          changelog_filename: CHANGELOG.md
-          config_file: ./.github/configs/changelog-ci.json
-          committer_username: Changelog Doctor
-          committer_email: github-actions[bot]@users.noreply.github.com
+          github-token: ${{ secrets.github_token }}
+          skip-version-file: true
+          skip-commit: true
+          skip-tag: true
+          skip-bump: true
 
       - name: Create release
         uses: softprops/action-gh-release@v2

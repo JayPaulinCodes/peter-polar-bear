@@ -96,8 +96,8 @@ jobs:
             dist/
             ptero/
 
-  release:
-    name: Release Project
+  publish-tag:
+    name: Publish Tag
     runs-on:
       - self-hosted
       - Linux
@@ -120,20 +120,21 @@ jobs:
         run: tar -cvzf ${{ env.OUTPUT_NAME }}.tar.gz artifacts/
 
       - name: Generate changelog
-        id: generate-changelog
-        uses: saadmk11/changelog-ci@v1.1.2
+        id: create-changelog
+        uses: TriPSs/conventional-changelog-action@v5
         with:
-          release_version: ${{ needs.package.outputs.project-version }}
-          changelog_filename: CHANGELOG.md
-          config_file: ./.github/configs/changelog-ci.json
-          committer_username: Changelog Doctor
-          committer_email: github-actions[bot]@users.noreply.github.com
+          github-token: ${{ secrets.github_token }}
+          skip-version-file: true
+          skip-commit: true
+          skip-tag: true
+          skip-bump: true
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "v${{ needs.package.outputs.project-version }}"
           name: "Release: v${{ needs.package.outputs.project-version }}"
+          body: ${{ steps.create-changelog.outputs.clean_changelog }}
           fail_on_unmatched_files: true
           generate_release_notes: true
           prerelease: true
