@@ -1,11 +1,105 @@
 name: CI Build
 
-on: push
+on:
+  push:
+    branches:
+      - "develop"
+      - "main"
+      - "master"
+    paths:
+      - "**"
+      - "!package.json"
 
 jobs:
-  compile:
+  version-bump:
+    name: Bump Version
+    runs-on:
+      - self-hosted
+      - Linux
+
+    env:
+      BRANCH_NAME: ${{ github.ref_name }}
+
+    outputs:
+      bumped-version: ${{ steps.load-package-data.outputs.bumped-version }}
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Bump package version (beta)
+        if: ${{ env.BRANCH_NAME == 'develop' }}
+        run: node .github/scripts/version-bump-beta.js
+
+      - name: Bump package version (prod)
+        if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
+        run: node .github/scripts/version-bump-prod.js
+
+      - name: Push package.json
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "chore(npm): Bumped package version"
+          committer_name: GitHub Actions
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+          add: "package.json"
+
+  compile-project:
     name: Compile Project
-    uses: ./.github/workflows/compile-project.yml
+    runs-on:
+      - self-hosted
+      - Linux
+
+    needs:
+      - version-bump
+
+    env:
+      OUTPUT_NAME: "${{ github.sha }}-compiled"
+
+    outputs:
+      artifact-name: ${{ env.OUTPUT_NAME }}
+      artifact-id: ${{ steps.artifact-upload.outputs.artifact-id }}
+      artifact-url: ${{ steps.artifact-upload.outputs.artifact-url }}
+      project-version: ${{ steps.proj-version.outputs.bumped-version }}
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Load package.json into the env
+        id: load-package-data
+        run: |
+          echo 'PACKAGE_JSON<<EOF' >> $GITHUB_ENV
+          cat ./package.json >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Output project version
+        id: proj-version
+        run: echo "bumped-version=${{ fromJson(env.PACKAGE_JSON).version }}" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile project
+        run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        id: artifact-upload
+        with:
+          name: ${{ env.OUTPUT_NAME }}
+          retention-days: 1
+          path: ./*
 
   package:
     name: Package Project
@@ -14,7 +108,7 @@ jobs:
       - Linux
 
     needs:
-      - compile
+      - compile-project
 
     env:
       BRANCH_NAME: ${{ github.ref_name }}
@@ -24,14 +118,14 @@ jobs:
       artifact-name: ${{ env.OUTPUT_NAME }}
       artifact-id: ${{ steps.artifact-upload.outputs.artifact-id }}
       artifact-url: ${{ steps.artifact-upload.outputs.artifact-url }}
-      bumped-version: ${{ needs.compile.outputs.bumped-version }}
+      project-version: ${{ needs.compile-project.outputs.project-version }}
 
     steps:
       - name: Download artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: actions/download-artifact@v4
         with:
-          name: ${{ needs.compile.outputs.artifact-name }}
+          name: ${{ needs.compile-project.outputs.artifact-name }}
 
       - name: Upload artifact
         id: artifact-upload
@@ -73,12 +167,28 @@ jobs:
           tar -cvzf ${{ env.OUTPUT_NAME }}.tar.gz artifacts/
           tar -cvzf pterodactyl-package.tar.gz artifacts/
 
-      - name: Create release
+      - name: Create release (prod)
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: softprops/action-gh-release@v2
         with:
+          tag: "v${{ needs.package.outputs.project-version }}"
+          name: "v${{ needs.package.outputs.project-version }}"
           generate_release_notes: true
-          tag: "v${{ needs.package.outputs.bumped-version }}"
+          prerelease: false
+          make_latest: true
+          files: |
+            "${{ env.OUTPUT_NAME }}.tar.gz"
+            "pterodactyl-package.tar.gz"
+
+      - name: Create release (beta)
+        if: ${{ env.BRANCH_NAME == 'develop' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag: "v${{ needs.package.outputs.project-version }}"
+          name: "v${{ needs.package.outputs.project-version }}"
+          generate_release_notes: true
+          prerelease: true
+          make_latest: false
           files: |
             "${{ env.OUTPUT_NAME }}.tar.gz"
             "pterodactyl-package.tar.gz"
