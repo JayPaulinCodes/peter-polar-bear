@@ -20,6 +20,11 @@ jobs:
       BRANCH_NAME: ${{ github.ref_name }}
       OUTPUT_NAME: "${{ github.sha }}-packed"
 
+    outputs:
+      artifact-name: ${{ env.OUTPUT_NAME }}
+      artifact-id: ${{ steps.artifact-upload.outputs.artifact-id }}
+      artifact-url: ${{ steps.artifact-upload.outputs.artifact-url }}
+
     steps:
       - name: Download artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
@@ -28,6 +33,7 @@ jobs:
           name: ${{ needs.compile.outputs.artifact-name }}
 
       - name: Upload artifact
+        id: artifact-upload
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
         uses: actions/upload-artifact@v4
         with:
@@ -55,9 +61,7 @@ jobs:
     steps:
       - name: Download artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ env.OUTPUT_NAME }}
+        run: wget ${{ needs.package.output.artifact-url }}
       
       - name: Copy artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
@@ -68,5 +72,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            ${{ env.OUTPUT_NAME }}
+            ${{ env.OUTPUT_NAME }}.zip
             pterodactyl-package.zip
