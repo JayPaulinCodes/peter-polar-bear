@@ -61,7 +61,7 @@ jobs:
     steps:
       - name: Download artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
-        run: wget ${{ needs.package.output.artifact-url }}
+        run: wget ${{ needs.package.outputs.artifact-url }}
       
       - name: Copy artifact
         if: ${{ env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master' }}
