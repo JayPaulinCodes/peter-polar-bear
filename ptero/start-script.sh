@@ -1,5 +1,5 @@
 #!/bin/bash
-# DoJRP Bot Startup Script
+# Generic Bot Startup Script
 #
 # Server Files: /home/container
 readonly ROOT_DIR=/home/container
@@ -22,17 +22,16 @@ if [ "${AUTO_UPDATE}" == "true" ] || [ "${AUTO_UPDATE}" == "1" ]; then
     echo -e "Expected to pull artifact from git, trying to do so"
     sleep 10s
 
-    readonly GIT_ADDRESS="https://gitlab.dojrp.online/api/v4/projects/${GIT_PROJECT_ID}/jobs/artifacts/${GIT_BRANCH}/download?job=npm_build_final"
+    readonly GIT_ADDRESS="https://github.com/${GIT_OWNER}/${GIT_NAME}/releases/latest/download/pterodactyl-package.tar.gz"
     curl --location "${GIT_ADDRESS}" \
-        --header "PRIVATE-TOKEN: ${GIT_ACCESS_TOKEN}" \
         --output "actifact.zip"
 
     mkdir $ROOT_DIR/.temp-artifact
     unzip actifact.zip -d $ROOT_DIR/.temp-artifact
     echo -e "---"
-    rm -rfv $ROOT_DIR/.temp-artifact/artifact-output/ptero
+    rm -rfv $ROOT_DIR/.temp-artifact/ptero
     echo -e "---"
-    cp -av $ROOT_DIR/.temp-artifact/artifact-output/. .
+    cp -av $ROOT_DIR/.temp-artifact/. .
     echo -e "---"
     rm -rfv $ROOT_DIR/.temp-artifact
     echo -e "---"

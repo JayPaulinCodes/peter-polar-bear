@@ -1,5 +1,5 @@
 #!/bin/bash
-# DoJRP Bots Installation Script
+# Generic Bot Installation Script
 #
 # Server Files: /mnt/server
 # Script Container: node:21-bullseye-slim
@@ -29,15 +29,14 @@ cd $ROOT_DIR
 echo -e "----------------------------------------------------------------------"
 echo -e "Expected to pull artifact from git, trying to do so"
 
-readonly GIT_ADDRESS="https://gitlab.dojrp.online/api/v4/projects/${GIT_PROJECT_ID}/jobs/artifacts/${GIT_BRANCH}/download?job=npm_build_final"
+readonly GIT_ADDRESS="https://github.com/${GIT_OWNER}/${GIT_NAME}/releases/latest/download/pterodactyl-package.tar.gz"
 curl --location "${GIT_ADDRESS}" \
-    --header "PRIVATE-TOKEN: ${GIT_ACCESS_TOKEN}" \
     --output "actifact.zip"
 
 unzip actifact.zip -d $ROOT_DIR
-rsync -vr $ROOT_DIR/artifact-output/ .
+# rsync -vr $ROOT_DIR/artifact-output/ .
 rm $ROOT_DIR/actifact.zip
-rm -rfv $ROOT_DIR/artifact-output/
+# rm -rfv $ROOT_DIR/artifact-output/
 find $ROOT_DIR -type f -name "*.sh" -exec dos2unix {} \;
 
 if [ -f $ROOT_DIR/package-lock.json ]; then
