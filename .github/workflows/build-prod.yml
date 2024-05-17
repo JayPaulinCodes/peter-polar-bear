@@ -6,7 +6,6 @@ on:
       - Version Bump Prod
     branches: 
       - main
-      - master
     types: 
       - completed
 

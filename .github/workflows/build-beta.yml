@@ -124,7 +124,6 @@ jobs:
         with:
           tag_name: "v${{ needs.package.outputs.project-version }}"
           name: "Release: v${{ needs.package.outputs.project-version }}"
-          body: ${{ steps.create-changelog.outputs.clean_changelog }}
           fail_on_unmatched_files: true
           generate_release_notes: true
           prerelease: true
