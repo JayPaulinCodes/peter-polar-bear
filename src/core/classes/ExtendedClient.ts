@@ -46,6 +46,7 @@ export class ExtendedClient extends Client {
                     enabled: true
                 },
                 file: {
+                    outputDirectory: "./logs/",
                     enabled: true
                 }
             }
