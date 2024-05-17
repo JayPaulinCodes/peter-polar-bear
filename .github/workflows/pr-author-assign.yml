@@ -1,0 +1,21 @@
+name: PR Author Assignment
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+  
+permissions:
+  pull-requests: write
+  
+jobs:
+  assign-author:
+    name: Assign PR Author
+    runs-on:
+      - self-hosted
+      - Linux
+
+    steps:
+      - name: Author auto assignemnt
+        uses: toshimaru/auto-author-assign@v2.1.0
