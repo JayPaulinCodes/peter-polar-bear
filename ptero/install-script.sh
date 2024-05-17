@@ -8,8 +8,8 @@ readonly ROOT_DIR=/mnt/server
 echo -e "----------------------------------------------------------------------"
 echo -e "Running apt update"
 apt update
-echo -e "Installing other packages (dos2unix, curl, jq, file, unzip, rsync)"
-apt install -y dos2unix curl jq file unzip rsync
+echo -e "Installing other packages (dos2unix, curl, jq, file, tar, rsync)"
+apt install -y dos2unix curl jq file tar rsync
 
 echo -e "----------------------------------------------------------------------"
 echo -e "Updating npm (this may take some time)"
@@ -31,12 +31,12 @@ echo -e "Expected to pull artifact from git, trying to do so"
 
 readonly GIT_ADDRESS="https://github.com/${GIT_OWNER}/${GIT_NAME}/releases/latest/download/pterodactyl-package.tar.gz"
 curl --location "${GIT_ADDRESS}" \
-    --output "actifact.zip"
+    --output "artifact.tar.gz"
 
-unzip actifact.zip -d $ROOT_DIR
-# rsync -vr $ROOT_DIR/artifact-output/ .
-rm $ROOT_DIR/actifact.zip
-# rm -rfv $ROOT_DIR/artifact-output/
+tar -xvzf artifact.tar.gz -C $ROOT_DIR
+rsync -vr $ROOT_DIR/artifacts/ .
+rm $ROOT_DIR/artifact.tar.gz
+rm -rfv $ROOT_DIR/artifacts/
 find $ROOT_DIR -type f -name "*.sh" -exec dos2unix {} \;
 
 if [ -f $ROOT_DIR/package-lock.json ]; then

@@ -24,18 +24,18 @@ if [ "${AUTO_UPDATE}" == "true" ] || [ "${AUTO_UPDATE}" == "1" ]; then
 
     readonly GIT_ADDRESS="https://github.com/${GIT_OWNER}/${GIT_NAME}/releases/latest/download/pterodactyl-package.tar.gz"
     curl --location "${GIT_ADDRESS}" \
-        --output "actifact.zip"
+        --output "artifact.tar.gz"
 
     mkdir $ROOT_DIR/.temp-artifact
-    unzip actifact.zip -d $ROOT_DIR/.temp-artifact
+    tar -xvzf artifact.tar.gz -C $ROOT_DIR/.temp-artifact
     echo -e "---"
-    rm -rfv $ROOT_DIR/.temp-artifact/ptero
+    rm -rfv $ROOT_DIR/.temp-artifact/artifacts/ptero
     echo -e "---"
-    cp -av $ROOT_DIR/.temp-artifact/. .
+    cp -av $ROOT_DIR/.temp-artifact/artifacts/. .
     echo -e "---"
     rm -rfv $ROOT_DIR/.temp-artifact
     echo -e "---"
-    rm -fv $ROOT_DIR/actifact.zip
+    rm -fv $ROOT_DIR/artifact.tar.gz
     
     echo -e "-----"
     echo -e "Setting file permissions"
