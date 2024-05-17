@@ -1,6 +1,6 @@
 {
   "name": "peter-polar-bear",
-  "version": "1.0.2",
+  "version": "1.0.3-beta0",
   "scripts": {
     "format:check": "prettier src -c",
     "format:write": "prettier src -w",
