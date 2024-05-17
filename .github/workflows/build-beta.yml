@@ -124,6 +124,7 @@ jobs:
         with:
           tag_name: "v${{ needs.package.outputs.project-version }}"
           name: "Release: v${{ needs.package.outputs.project-version }}"
+          target_commitish: "develop"
           fail_on_unmatched_files: true
           generate_release_notes: true
           prerelease: true
