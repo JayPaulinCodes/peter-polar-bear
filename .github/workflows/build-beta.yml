@@ -119,12 +119,6 @@ jobs:
       - name: Zip artifact
         run: tar -cvzf ${{ env.OUTPUT_NAME }}.tar.gz artifacts/
 
-      - name: Generate changelog
-        id: create-changelog
-        uses: JayPaulinCodes/changelog-generation@v0.0.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
