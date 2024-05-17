@@ -3,6 +3,7 @@ name: Pterodactyl Restart
 on:
   release:
     types:
+      - created
       - published
 
 jobs:
