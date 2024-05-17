@@ -6,7 +6,9 @@
     "format:write": "prettier src -w",
     "build": "tsc -b --force && tscpaths",
     "prestart": "npm run build",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "ptero:start:prod": "NODE_ENV=production node dist/index.js",
+    "ptero:start:dev": "NODE_ENV=development node dist/index.js"
   },
   "dependencies": {
     "@devjacob/logger": "=0.1.4",
