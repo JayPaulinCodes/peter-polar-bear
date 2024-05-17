@@ -3,7 +3,7 @@ name: Version Bump Beta
 on:
   push:
     branches:
-      - "develop"
+      - develop
     paths:
       - "**"
       - "!package.json"
