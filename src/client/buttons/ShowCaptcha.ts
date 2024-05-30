@@ -1,4 +1,4 @@
-import { ChannelName, Constants, RoleName } from "@bot/constants";
+import { ChannelName, Constants, ErrorEmbed, RoleName, WarningEmbed } from "@bot/constants";
 import { Button, ExtendedClient, generalLog, tryFindEmoji, tryGetChannelByName } from "@bot/core";
 import { DbLogic } from "@bot/database";
 import Captcha from "@packages/captcha";
@@ -16,7 +16,7 @@ export default new Button({
         if (member === undefined) { 
             await interaction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Could not find guild member") ]
+                embeds: [ new ErrorEmbed("Could not find guild member") ]
             });
             return;
         }
@@ -33,7 +33,7 @@ export default new Button({
         if (member.roles.cache.filter(elem => blacklistedRoles.includes(elem.name)).size > 0) {
             await interaction.followUp({
                 ephemeral: true,
-                embeds: [ client.embeds.warnning("You are already verified!") ]
+                embeds: [ new WarningEmbed("You are already verified!") ]
             });
             return;
         }
@@ -57,7 +57,7 @@ export default new Button({
         if (userCaptcha === null) {
             await interaction.followUp({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Failed to generate a captcha image") ]
+                embeds: [ new ErrorEmbed("Failed to generate a captcha image") ]
             });
             return;
         }

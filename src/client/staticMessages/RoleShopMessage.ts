@@ -1,19 +1,19 @@
 import { BaseMessageOptions, GuildTextBasedChannel, Message } from "discord.js";
-import { ExtendedClient, StaticMessage, homeGuildId, tryGetChannelByName } from "@bot/core";
+import { ExtendedClient, StaticMessage, homeGuildId, tryGetChannelByName, tryGetRoleByName } from "@bot/core";
 import { DbLogic } from "@bot/database";
-import { ChannelName, ComponentHelper, CaptchaEmbed } from "@bot/constants";
+import { ChannelName, ComponentHelper, RoleName, RoleShopEmbed } from "@bot/constants";
 
 export default new StaticMessage({
-    name: "captchaMessage",
+    name: "roleShopMessage",
     update: async (client: ExtendedClient) => {
-        client.logger.debug("Starting update for static message 'captchaMessage'");
+        client.logger.debug("Starting update for static message 'roleShopMessage'");
         const GUILD_ID = homeGuildId();
-        const CHANNEL_ID = tryGetChannelByName(client, ChannelName.GETTING_STARTED)?.id ?? "1239590456879353927";
-        const DB_NAME = "captchaMessage";
+        const CHANNEL_ID = tryGetChannelByName(client, ChannelName.ROLE_SHOP)?.id ?? "1239590385165012992";
+        const DB_NAME = "roleShopMessage";
 
         const messageContent: BaseMessageOptions = {
-            embeds: [ new CaptchaEmbed() ],
-            components: [ ComponentHelper.captchaButton() ]
+            embeds: [ new RoleShopEmbed(client) ],
+            components: [ ComponentHelper.roleShopButtons() ]
         }
         
         const dbItem = await DbLogic.getStaticMessage(DB_NAME);
@@ -45,6 +45,6 @@ export default new StaticMessage({
             await message.edit(messageContent);
         }
 
-        client.logger.log("Finished update for static message 'captchaMessage'");
+        client.logger.log("Finished update for static message 'roleShopMessage'");
     }
 });

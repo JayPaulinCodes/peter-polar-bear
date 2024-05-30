@@ -9,7 +9,7 @@ import { AnySelectMenuInteraction, BaseInteraction, ButtonInteraction, ChatInput
 import { Command, ExtendedClientOptions, Event, ContextCommand, toUnixTime, Button, StaticMessage, SelectMenu, errorLog, cardinalToOrdinal } from "@bot/core";
 import { DbLogic } from "@bot/database";
 import { MysqlError } from "mysql";
-import { EmbedHelper } from "@bot/constants";
+import { ErrorEmbed } from "@bot/constants";
 
 const globPromise = promisify(glob);
 
@@ -83,11 +83,6 @@ export class ExtendedClient extends Client {
      * The options used to initialize the client
      */
     public readonly extendedOptions: ExtendedClientOptions;
-
-    /**
-     * The embed helper to help generate fairly consistient embeds
-     */
-    public readonly embeds: EmbedHelper;
     
     /**
      * The logger for the client
@@ -149,9 +144,6 @@ export class ExtendedClient extends Client {
 
         // Create our logger
         this.logger = new Logger(this.extendedOptions.loggerOptions);
-
-        // Create the embed helper
-        this.embeds = new EmbedHelper(this);
     }
 
     /**
@@ -544,7 +536,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to execute the command: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
+                    embeds: [ new ErrorEmbed("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
                 await errorLog(client, error, interaction);
 
@@ -624,7 +616,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to execute the command: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
+                    embeds: [ new ErrorEmbed("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
                 await errorLog(client, error, interaction);
                 
@@ -707,7 +699,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to use the button: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
+                    embeds: [ new ErrorEmbed("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
                 await errorLog(client, error, interaction);
                 
@@ -817,7 +809,7 @@ export class ExtendedClient extends Client {
                 client.logger.error(format("[ID: %s] An error occured while trying to use the select menu: %s", interaction.id, error.message), error);
                 const replyPayload = { 
                     ephemeral: true, 
-                    embeds: [ this.embeds.error("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
+                    embeds: [ new ErrorEmbed("An error while using this command!\nThis error has already been reported to the dev team for investigation.\nIf you keep encountering errors please reach out.") ]
                 };
 
                 await errorLog(client, error, interaction);

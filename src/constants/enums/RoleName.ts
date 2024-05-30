@@ -6,7 +6,9 @@ export enum RoleName {
     
     // Misc Roles
     OTHER_DEVELOPER = "🕹️Other Developer",
+    DOJRP_MEMBER = "🗿 DoJRP Member",
     DEV_UPDATES = "🔔 Development Updates",
+    CONTENT_UPDATES = "🔔 Content Updates",
     
     // Key Roles
     KEY_VOID = "🔑 Void Key",

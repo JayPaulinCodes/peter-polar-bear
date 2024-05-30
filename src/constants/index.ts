@@ -8,7 +8,7 @@ export * from "./interfaces/IExpandableChannel";
 
 export * from "./classes/ComponentHelper";
 export * from "./classes/Constants";
-export * from "./classes/EmbedHelper";
+export * from "./classes/Embeds";
 export * from "./classes/ModalHelper";
 
 export * from "./Filters";

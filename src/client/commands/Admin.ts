@@ -1,7 +1,7 @@
 import { ChannelType, Message, ModalSubmitInteraction, SlashCommandBuilder } from "discord.js";
 import { format } from "node:util";
 import { Command, ExtendedClient, generalLog, splitMessage } from "@bot/core";
-import { ModalHelper, RoleName } from "@bot/constants";
+import { ErrorEmbed, ModalHelper, RoleName, SuccessEmbed, WarningEmbed } from "@bot/constants";
 
 export default new Command({
     data: new SlashCommandBuilder()
@@ -68,12 +68,12 @@ export default new Command({
             if (interaction.replied || interaction.deferred) {
                 await interaction.followUp({
                     ephemeral: true,
-                    embeds: [ client.embeds.error("Cannot process command") ]
+                    embeds: [ new ErrorEmbed("Cannot process command") ]
                 });
             } else {
                 await interaction.reply({
                     ephemeral: true,
-                    embeds: [ client.embeds.error("Cannot process command") ]
+                    embeds: [ new ErrorEmbed("Cannot process command") ]
                 });
             }
             return;
@@ -87,7 +87,7 @@ export default new Command({
             if (_channel?.type !== ChannelType.GuildText) {
                 await interaction.reply({
                     ephemeral: true,
-                    embeds: [ client.embeds.error("Could not find the channel to send the message to") ]
+                    embeds: [ new ErrorEmbed("Could not find the channel to send the message to") ]
                 });
                 return;
             }
@@ -96,7 +96,7 @@ export default new Command({
             if (channel === null || channel === undefined || !channel.isTextBased()) {
                 await interaction.reply({
                     ephemeral: true,
-                    embeds: [ client.embeds.error("Could not find the channel to send the message to") ]
+                    embeds: [ new ErrorEmbed("Could not find the channel to send the message to") ]
                 });
                 return;
             }
@@ -108,7 +108,7 @@ export default new Command({
             if (user.roles.cache.filter(elem => allowedRoles.includes(elem.name)).size === 0) {
                 await interaction.reply({
                     ephemeral: true,
-                    embeds: [ client.embeds.warnning("You do not have the required permissions to send a message to the specified channel") ]
+                    embeds: [ new WarningEmbed("You do not have the required permissions to send a message to the specified channel") ]
                 });
                 return;
             }
@@ -129,7 +129,7 @@ export default new Command({
 
                 await modalInteraction.reply({
                     ephemeral: true,
-                    embeds: [ client.embeds.success("Message successfully sent") ]
+                    embeds: [ new SuccessEmbed("Message successfully sent") ]
                 });
             });
 

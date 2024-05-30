@@ -1,7 +1,7 @@
 import { format } from "node:util";
 import { ApplicationCommandType, ContextMenuCommandBuilder, ModalSubmitInteraction } from "discord.js";
 import { ContextCommand, ExtendedClient } from "@bot/core";
-import { CategoryName, Constants, ModalHelper, RoleName } from "@bot/constants";
+import { CategoryName, Constants, ErrorEmbed, ModalHelper, RoleName, SuccessEmbed } from "@bot/constants";
 
 export default new ContextCommand({
     data: new ContextMenuCommandBuilder()
@@ -21,7 +21,7 @@ export default new ContextCommand({
         if (guild === null) { 
             await interaction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Could not find guild") ]
+                embeds: [ new ErrorEmbed("Could not find guild") ]
             });
             return;
         }
@@ -32,7 +32,7 @@ export default new ContextCommand({
         if (member === undefined) { 
             await interaction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Could not find guild member") ]
+                embeds: [ new ErrorEmbed("Could not find guild member") ]
             });
             return;
         }
@@ -42,7 +42,7 @@ export default new ContextCommand({
         if (targetChannel === undefined || !targetChannel.isTextBased() || targetChannel.isDMBased()) { 
             await interaction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Could not find target channel") ]
+                embeds: [ new ErrorEmbed("Could not find target channel") ]
             });
             return;
         }
@@ -52,7 +52,7 @@ export default new ContextCommand({
         if (targetMessage === undefined) { 
             await interaction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Could not find target message") ]
+                embeds: [ new ErrorEmbed("Could not find target message") ]
             });
             return;
         }
@@ -61,7 +61,7 @@ export default new ContextCommand({
         if (targetMessage.author.id !== client.user?.id) {
             await interaction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.error("You can only edit messages sent by DepuTRON") ]
+                embeds: [ new ErrorEmbed("You can only edit messages sent by DepuTRON") ]
             });
             return;
         }
@@ -71,7 +71,7 @@ export default new ContextCommand({
         if (member.roles.cache.filter(elem => allowedRolesName.includes(elem.name)).size === 0) {
             await interaction.followUp({
                 ephemeral: true,
-                embeds: [ client.embeds.error(format("You don't have the required permissions to edit this message. You require one of the following roles: \n%s", allowedRolesName.map(role => "- " + role).join("\n"))) ]
+                embeds: [ new ErrorEmbed(format("You don't have the required permissions to edit this message. You require one of the following roles: \n%s", allowedRolesName.map(role => "- " + role).join("\n"))) ]
             });
             return;
         }
@@ -83,7 +83,7 @@ export default new ContextCommand({
 
             await modalInteraction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.success("Message successfully edited") ]
+                embeds: [ new SuccessEmbed("Message successfully edited") ]
             });
         });
 

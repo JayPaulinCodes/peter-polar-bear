@@ -1,7 +1,7 @@
 import { Guild, SlashCommandBuilder } from "discord.js";
 import { Command, tryGetRoleByName } from "@bot/core";
 import { DbLogic } from "@bot/database";
-import { RoleName } from "@bot/constants";
+import { ErrorEmbed, RoleName, SuccessEmbed, WarningEmbed } from "@bot/constants";
 
 export default new Command({
     data: new SlashCommandBuilder()
@@ -21,7 +21,7 @@ export default new Command({
         if (member === undefined) { 
             await interaction.reply({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Could not find guild member") ]
+                embeds: [ new ErrorEmbed("Could not find guild member") ]
             });
             return;
         }
@@ -38,7 +38,7 @@ export default new Command({
         if (member.roles.cache.filter(elem => blacklistedRoles.includes(elem.name)).size > 0) {
             await interaction.followUp({
                 ephemeral: true,
-                embeds: [ client.embeds.warnning("You are already verified!") ]
+                embeds: [ new WarningEmbed("You are already verified!") ]
             });
             return;
         }
@@ -56,7 +56,7 @@ export default new Command({
         if (userCaptcha === null) {
             await interaction.followUp({
                 ephemeral: true,
-                embeds: [ client.embeds.error("You don't have any active captcha to solve") ]
+                embeds: [ new ErrorEmbed("You don't have any active captcha to solve") ]
             });
             return;
         }
@@ -66,7 +66,7 @@ export default new Command({
         if (providedValue === null || typeof providedValue !== "string" || providedValue !== userCaptcha.value) {
             await interaction.followUp({
                 ephemeral: true,
-                embeds: [ client.embeds.warnning("Incorrect captcha value, please try again") ]
+                embeds: [ new WarningEmbed("Incorrect captcha value, please try again") ]
             });
             return;
         }
@@ -76,14 +76,14 @@ export default new Command({
         if (memberRole === undefined) {
             await interaction.followUp({
                 ephemeral: true,
-                embeds: [ client.embeds.error("Coulnd't find the role to give you!") ]
+                embeds: [ new ErrorEmbed("Coulnd't find the role to give you!") ]
             });
             return;
         }
 
         await interaction.followUp({
             ephemeral: true,
-            embeds: [ client.embeds.success("Captcha verification successful!") ]
+            embeds: [ new SuccessEmbed("Captcha verification successful!") ]
         });
         member.roles.add(memberRole);
     }
