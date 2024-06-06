@@ -1,6 +1,7 @@
 import { APIEmbed, APIEmbedAuthor, APIEmbedField, APIEmbedFooter, APIEmbedImage, APIEmbedThumbnail, Embed, EmbedType, Role, Snowflake } from "discord.js";
 import { Colour, RoleName } from "@bot/constants";
 import { ExtendedClient, tryGetRoleByName } from "@bot/core";
+import { DbRecommendedCreator } from "@bot/database";
 
 export class BaseEmbed implements APIEmbed {
     type: EmbedType = EmbedType.Rich;
@@ -121,6 +122,42 @@ export class RoleShopEmbed extends BaseEmbed {
                     inline: true
                 }
             ]
+        });
+    }
+}
+
+export class RecommendedCreatorsEmbed extends BaseEmbed {
+    constructor(recommendedCreators: DbRecommendedCreator[]) {
+        super({
+            title: "The Igloo's Casting Couch",
+            description: "Here at the Igloo we like to take care of our own, and we want to make sure you have only the best content to watch, "
+            + "which is why we have compiled a list of our recommended content creators!\nWe promise only a *small* protion of them have bribed us.",
+            fields: [
+                {
+                    name: "Creator",
+                    value: recommendedCreators.map(creator => `<@${creator.discordId}>`).join("\n"),
+                    inline: true
+                },
+                {
+                    name: "Twitch",
+                    value: recommendedCreators.map(creator => creator.twitchUrl == null ? "N/A" : `[${creator.twitchUrl}](https://www.twitch.tv/${creator.twitchUrl})`).join("\n"),
+                    inline: true
+                },
+                {
+                    name: "Youtube",
+                    value: recommendedCreators.map(creator => creator.youtubeUrl == null ? "N/A" : `[${creator.youtubeUrl}](https://www.youtube.com/c/${creator.youtubeUrl})`).join("\n"),
+                    inline: true
+                }
+            ]
+        });
+    }
+}
+
+export class CreatorOnlineTwitchEmbed extends BaseEmbed {
+    constructor(handle: string) {
+        super({
+            description: `${handle} has gone **live** on [Twitch](<https://twitch.tv/${handle}>!)`,
+            color: Colour.SUCCESS_GREEN
         });
     }
 }

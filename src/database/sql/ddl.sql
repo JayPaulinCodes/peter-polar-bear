@@ -2,7 +2,8 @@ USE `peter-bot`;
 
 DROP TABLE IF EXISTS
     `captchas`,
-    `static-message`;
+    `static-message`,
+    `recommended-creator`;
 
 
 -- -----[ Captchas Table | Start ]-----
@@ -35,3 +36,17 @@ CREATE TABLE `static-message` (
         PRIMARY KEY (`id`)
 );
 -- -----[ Static Messages Table | End ]-----
+
+-- -----[ Recommended-Creators Table | Start ]-----
+CREATE TABLE `recommended-creator` (
+    `id`                    INT NOT NULL AUTO_INCREMENT,
+    `name`                  VARCHAR(128) NOT NULL,
+    `discordId`             VARCHAR(128) NOT NULL,
+    `twitchUrl`             VARCHAR(128) DEFAULT NULL,
+    `youtubeUrl`            VARCHAR(128) DEFAULT NULL,
+    `updated`               TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `created`               TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT PK_RecommendedCreator
+        PRIMARY KEY (`id`)
+);
+-- -----[ Recommended-Creators Table | End ]-----

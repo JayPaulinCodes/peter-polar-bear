@@ -7,6 +7,8 @@
     "build": "tsc -b --force && tscpaths",
     "prestart": "npm run build",
     "start": "node dist/index.js",
+    "pretest:twitch": "npm run build",
+    "test:twitch": "node dist/packages/twitch/TestRun.js",
     "ptero:start:prod": "NODE_ENV=production node dist/index.js",
     "ptero:start:dev": "NODE_ENV=development node dist/index.js"
   },
@@ -17,7 +19,8 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "glob": "=7.2.0",
-    "mysql2": "^3.9.2"
+    "mysql2": "^3.9.2",
+    "ws": "^8.17.0"
   },
   "devDependencies": {
     "@devjacob/tscpaths": "^0.1.6",

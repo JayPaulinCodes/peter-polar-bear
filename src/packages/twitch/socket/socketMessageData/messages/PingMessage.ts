@@ -1,0 +1,1 @@
+export interface PingMessage { [key: string]: any }

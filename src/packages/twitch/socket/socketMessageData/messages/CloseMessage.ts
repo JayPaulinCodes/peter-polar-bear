@@ -1,0 +1,1 @@
+export interface CloseMessage { [key: string]: any }

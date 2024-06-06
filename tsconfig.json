@@ -22,7 +22,8 @@
         "@bot/constants": [ "constants/index" ],
         "@bot/core": [ "core/index" ],
         "@bot/database": [ "database/index" ],
-        "@packages/captcha": [ "packages/captcha/index" ]
+        "@packages/captcha": [ "packages/captcha/index" ],
+        "@packages/twitch": [ "packages/twitch/index" ]
       },
 
       // Emit

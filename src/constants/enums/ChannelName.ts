@@ -2,6 +2,7 @@ export enum ChannelName {
 
     // Newspaper Stand
     ANNOUNCEMENTS = "announcements",
+    CONTENT_UPDATES = "content-updates",
     ROLE_SHOP = "role-shop",
     GETTING_STARTED = "getting-started",
     

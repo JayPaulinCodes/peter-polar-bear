@@ -1,0 +1,74 @@
+import { StreamOfflineEvent } from "./stream/StreamOfflineEvent";
+import { StreamOnlineEvent } from "./stream/StreamOnlineEvent";
+
+export type Default = { [key: string]: any };
+
+export * from "./stream/StreamOfflineEvent";
+export * from "./stream/StreamOnlineEvent";
+
+export interface SubscriptionEventMap {
+    "AutomodMessageHold": Default; // AutomodMessageHoldEvent;
+    "AutomodMessageUpdate": Default; // AutomodMessageUpdateEvent;
+    "AutomodSettingsUpdate": Default; // AutomodSettingsUpdateEvent;
+    "AutomodTermsUpdate": Default; // AutomodTermsUpdateEvent;
+    "ChannelAdBreakBegin": Default; // ChannelAdBreakBeginEvent;
+    "ChannelBan": Default; // ChannelBanEvent;
+    "ChannelChatClear": Default; // ChannelChatClearEvent;
+    "ChannelChatClearUserMessages": Default; // ChannelChatClearUserMessagesEvent;
+    "ChannelChatMessage": Default; // ChannelChatMessageEvent;
+    "ChannelChatMessageDelete": Default; // ChannelChatMessageDeleteEvent;
+    "ChannelChatNotification": Default; // ChannelChatNotificationEvent;
+    "ChannelChatSettingsUpdate": Default; // ChannelChatSettingsUpdateEvent;
+    "ChannelChatUserMessageHold": Default; // ChannelChatUserMessageHoldEvent;
+    "ChannelChatUserMessageUpdate": Default; // ChannelChatUserMessageUpdateEvent;
+    "ChannelSubscribe": Default; // ChannelSubscribeEvent;
+    "ChannelSubscriptionEnd": Default; // ChannelSubscriptionEndEvent;
+    "ChannelSubscriptionGift": Default; // ChannelSubscriptionGiftEvent;
+    "ChannelSubscriptionMessage": Default; // ChannelSubscriptionMessageEvent;
+    "ChannelCheer": Default; // ChannelCheerEvent;
+    "ChannelUpdate": Default; // ChannelUpdateEvent;
+    "ChannelFollow": Default; // ChannelFollowEvent;
+    "ChannelUnban": Default; // ChannelUnbanEvent;
+    "ChannelUnbanRequestCreate": Default; // ChannelUnbanRequestCreateEvent;
+    "ChannelUnbanRequestResolve": Default; // ChannelUnbanRequestResolveEvent;
+    "ChannelRaid": Default; // ChannelRaidEvent;
+    "ChannelModerate": Default; // ChannelModerateEvent;
+    "ChannelModeratorAdd": Default; // ChannelModeratorAddEvent;
+    "ChannelModeratorRemove": Default; // ChannelModeratorRemoveEvent;
+    "ChannelGuestStarSessionBegin": Default; // ChannelGuestStarSessionBeginEvent;
+    "ChannelGuestStarSessionEnd": Default; // ChannelGuestStarSessionEndEvent;
+    "ChannelGuestStarSessionUpdate": Default; // ChannelGuestStarSessionUpdateEvent;
+    "ChannelGuestStarSessionSettingUpdate": Default; // ChannelGuestStarSessionSettingUpdateEvent;
+    "ChannelPointsAutomaticRewardRedemptionAdd": Default; // ChannelPointsAutomaticRewardRedemptionAddEvent;
+    "ChannelPointsCustomRewardAdd": Default; // ChannelPointsCustomRewardAddEvent;
+    "ChannelPointsCustomRewardUpdate": Default; // ChannelPointsCustomRewardUpdateEvent;
+    "ChannelPointsCustomRewardRemove": Default; // ChannelPointsCustomRewardRemoveEvent;
+    "ChannelPointsCustomRewardRedemptionAdd": Default; // ChannelPointsCustomRewardRedemptionAddEvent;
+    "ChannelPointsCustomRewardRedemptionUpdate": Default; // ChannelPointsCustomRewardRedemptionUpdateEvent;
+    "ChannelPollBegin": Default; // ChannelPollBeginEvent;
+    "ChannelPollProgress": Default; // ChannelPollProgressEvent;
+    "ChannelPollEnd": Default; // ChannelPollEndEvent;
+    "ChannelPredictionBegin": Default; // ChannelPredictionBeginEvent;
+    "ChannelPredictionProgress": Default; // ChannelPredictionProgressEvent;
+    "ChannelPredictionLock": Default; // ChannelPredictionLockEvent;
+    "ChannelPredictionEnd": Default; // ChannelPredictionEndEvent;
+    "ChannelSuspiciousUserMessage": Default; // ChannelSuspiciousUserMessageEvent;
+    "ChannelSuspiciousUserUpdate": Default; // ChannelSuspiciousUserUpdateEvent;
+    "ChannelVipAdd": Default; // ChannelVipAddEvent;
+    "ChannelVipRemove": Default; // ChannelVipRemoveEvent;
+    "ConduitShardDisabled": Default; // ConduitShardDisabledEvent;
+    "DropEntitlementGrant": Default; // DropEntitlementGrantEvent;
+    "ExtensionBitsTransactionCreate": Default; // ExtensionBitsTransactionCreateEvent;
+    "Goals": Default; // GoalsEvent;
+    "HypeTrainBegin": Default; // HypeTrainBeginEvent;
+    "HypeTrainProgress": Default; // HypeTrainProgressEvent;
+    "HypeTrainEnd": Default; // HypeTrainEndEvent;
+    "StreamOnline": StreamOnlineEvent;
+    "StreamOffline": StreamOfflineEvent;
+    "UserAuthorizationGrant": Default; // UserAuthorizationGrantEvent;
+    "UserAuthorizationRevoke": Default; // UserAuthorizationRevokeEvent;
+    "UserAuthorizationUpdate": Default; // UserAuthorizationUpdateEvent;
+    "WhisperReceived": Default; // WhisperReceivedEvent;
+}
+
+export type SubscriptionEvent = SubscriptionEventMap[keyof SubscriptionEventMap];

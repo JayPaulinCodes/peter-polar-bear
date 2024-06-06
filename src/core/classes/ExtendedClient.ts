@@ -6,10 +6,11 @@ import { Stats } from "node:fs";
 import { readdir, rm, stat } from "fs/promises";
 import { dirname } from "node:path";
 import { AnySelectMenuInteraction, BaseInteraction, ButtonInteraction, ChatInputCommandInteraction, Client, ClientEvents, Collection, ContextMenuCommandInteraction, GatewayIntentBits, ModalSubmitInteraction, RESTPostAPIChatInputApplicationCommandsJSONBody, RESTPostAPIContextMenuApplicationCommandsJSONBody } from "discord.js";
-import { Command, ExtendedClientOptions, Event, ContextCommand, toUnixTime, Button, StaticMessage, SelectMenu, errorLog, cardinalToOrdinal } from "@bot/core";
+import { Command, ExtendedClientOptions, Event, ContextCommand, toUnixTime, Button, StaticMessage, SelectMenu, errorLog, cardinalToOrdinal, tryGetChannelByName, tryGetRoleByName } from "@bot/core";
 import { DbLogic } from "@bot/database";
 import { MysqlError } from "mysql";
-import { ErrorEmbed } from "@bot/constants";
+import { ChannelName, CreatorOnlineTwitchEmbed, ErrorEmbed, RoleName } from "@bot/constants";
+import { NotificationEvents, NotificationMessage, TwitchSocket } from "@packages/twitch";
 
 const globPromise = promisify(glob);
 
@@ -132,6 +133,8 @@ export class ExtendedClient extends Client {
         [ "selectMenus", [] ]
     ]);
 
+    public readonly twitchSocket: TwitchSocket;
+
     constructor(options: Partial<ExtendedClientOptions> = {}) {
         // Merge the client provided options with the default ones
         const _options: ExtendedClientOptions = <ExtendedClientOptions> smush(ExtendedClient.DEFAULT_OPTIONS, options)
@@ -144,6 +147,12 @@ export class ExtendedClient extends Client {
 
         // Create our logger
         this.logger = new Logger(this.extendedOptions.loggerOptions);
+
+        this.twitchSocket = new TwitchSocket({
+            clientId: process.env.TWITCH_CLIENT_ID ?? "",
+            clientSecret: process.env.TWITCH_CLIENT_SECRET ?? "",
+            clientAccessToken: process.env.TWITCH_CLIENT_ACCESS ?? ""
+        });
     }
 
     /**
@@ -837,6 +846,16 @@ export class ExtendedClient extends Client {
         this.logger.debug("Starting the client");
         const startupStart = new Date();
 
+        // Load the list of recommended creators
+        const creators = await DbLogic.getAllRecommendedCreators();
+        for (let i = 0; i < creators.length; i++) {
+            const handle = creators[i].twitchUrl;
+            if (handle !== null) {
+                await this.twitchSocket.tryAddSteamOnlineSub(handle);
+            }
+        }
+        this.twitchSocket.on("StreamOnline", this.handleSteamOnlineEvent.bind(this));
+
         // Load the commands and events at the same time
         this.logger.debug("Loading commands, context commands, events, and buttons");
         await Promise.all([
@@ -943,6 +962,23 @@ export class ExtendedClient extends Client {
         this.modalCallbacks.set(identifier, async (client: ExtendedClient, interaction: ModalSubmitInteraction) => {
             await callback(client, interaction);
             this.modalCallbacks.delete(identifier);
+        });
+    }
+
+    public async handleSteamOnlineEvent(event: NotificationMessage<"StreamOnline">) {
+        // Get the content notification channel
+        const channel = tryGetChannelByName(this, ChannelName.CONTENT_UPDATES);
+        if (channel === undefined) { return; }
+        if (!channel.isTextBased()) { return; }
+
+        // Get the role to ping
+        const role = tryGetRoleByName(this, RoleName.CONTENT_UPDATES);
+        if (role === undefined) { return; }
+
+        // Send the embed
+        await channel.send({
+            content: role?.toString(),
+            embeds: [ new CreatorOnlineTwitchEmbed(event.payload.event.broadcaster_user_name) ],
         });
     }
 }
